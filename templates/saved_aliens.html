@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Alien Collection - BioVerse</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="cosmic-background">
+        <div class="stars"></div>
+        <div class="nebula"></div>
+        <div class="floating-particles"></div>
+    </div>
+    
+    {% include 'header.html' %}
+    
+    <main class="saved-aliens-container">
+        <section class="hero-section">
+            <h1 class="hero-title">My Alien Collection</h1>
+            <p class="hero-subtitle">Explore your created alien species and their survival adventures across the cosmos</p>
+        </section>
+
+        <section class="collection-section">
+            <div class="section-header">
+                <h2>🪐 Saved Alien Species</h2>
+                <p>Your personal collection of extraterrestrial lifeforms</p>
+            </div>
+            
+            <div class="aliens-grid" id="aliensGrid">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading your alien collection...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Environment Explorer Modal -->
+        <div class="modal" id="environmentModal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEnvironmentModal()">&times;</span>
+                <div class="explorer-header">
+                    <h2>🌌 Environment Explorer</h2>
+                    <p>Test how your alien species would survive in extreme environments</p>
+                </div>
+                
+                <div class="explorer-content">
+                    <div class="environment-selector">
+                        <h3>Select Environment to Explore</h3>
+                        <div class="environments-grid" id="environmentsGrid">
+                            <!-- Environments will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="exploration-results" id="explorationResults" style="display: none;">
+                        <h3>Survival Analysis</h3>
+                        <div class="results-content">
+                            <div class="survival-score">
+                                <span class="score-label">Survival Score:</span>
+                                <span class="score-value" id="survivalScore">--</span>
+                            </div>
+                            <div class="analysis-section">
+                                <h4>Scientific Analysis</h4>
+                                <p id="survivalAnalysis"></p>
+                            </div>
+                            <div class="narrative-section">
+                                <h4>Adventure Story</h4>
+                                <p id="survivalNarrative"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Explorations History Modal -->
+        <div class="modal" id="explorationsModal">
+            <div class="modal-content">
+                <span class="close" onclick="closeExplorationsModal()">&times;</span>
+                <div class="section-header">
+                    <h2>📊 Exploration History</h2>
+                    <p>Previous environment tests for this alien species</p>
+                </div>
+                
+                <div class="explorations-list" id="explorationsList">
+                    <!-- Exploration history will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include 'footer.html' %}
+    
+    <style>
+        .cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            z-index: -3;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(0,255,255,0.5), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,0,255,0.5), transparent),
+                radial-gradient(2px 2px at 160px 30px, #ddd, transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: twinkle 4s linear infinite;
+            z-index: -2;
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .floating-particles::before,
+        .floating-particles::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(0, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-particles::before {
+            top: 20%;
+            left: 10%;
+            animation-delay: -2s;
+        }
+
+        .floating-particles::after {
+            top: 60%;
+            right: 15%;
+            animation-delay: -4s;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        .saved-aliens-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            color: #00ffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: #b3b3b3;
+            font-size: 1.1rem;
+        }
+
+
+        @media (max-width: 768px) {
+            .saved-aliens-container {
+                padding: 1rem;
+            }
+
+
+.explorer-header {
+    text-align: center;
+    margin: 3rem 0 2rem;
+}
+
+.explorer-header h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    color: #00ffff;
+    margin-bottom: 0.5rem;
+}
+
+.explorer-header p {
+    color: #b3b3b3;
+    font-size: 1.1rem;
+}
+
+.environments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.environment-card {
+    background: rgba(30, 30, 40, 0.6);
+    border: 1px solid rgba(255, 0, 255, 0.15);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.environment-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 0, 255, 0.4);
+    background: rgba(40, 40, 60, 0.8);
+}
+
+.environment-card h4 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.3rem;
+    color: #ff00ff;
+    margin-bottom: 0.75rem;
+}
+
+.env-type {
+    color: #00ffff;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.env-description {
+    color: #b3b3b3;
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.env-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.btn-explore-env {
+    width: 100%;
+    padding: 0.85rem;
+    background: linear-gradient(135deg, #ff00ff, #8000ff);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-explore-env:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 0, 255, 0.3);
+}
+
+.exploration-results {
+    background: rgba(30, 30, 40, 0.6);
+    border: 1px solid rgba(0, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-top: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.exploration-results h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.6rem;
+    color: #00ffff;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.survival-score {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.score-label {
+    font-size: 1.2rem;
+    color: #b3b3b3;
+}
+
+.score-value {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00ffff;
+    margin-left: 0.5rem;
+}
+
+.score-value.score-excellent {
+    color: #2ed573;
+}
+
+.score-value.score-good {
+    color: #1e90ff;
+}
+
+.score-value.score-fair {
+    color: #ffa502;
+}
+
+.score-value.score-poor {
+    color: #ff4757;
+}
+
+.analysis-section, .narrative-section {
+    margin-bottom: 2rem;
+}
+
+.analysis-section h4, .narrative-section h4 {
+    font-family: 'Orbitron', monospace;
+    color: #00ffff;
+    margin-bottom: 1rem;
+}
+
+.analysis-section p, .narrative-section p {
+    color: #b3b3b3;
+    line-height: 1.7;
+}
+
+.explorations-history {
+    margin-top: 3rem;
+}
+
+.explorations-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.survival-score-modal {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: #00ffff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(0, 255, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+.exploration-item:hover .survival-score-modal {
+    text-shadow: 0 0 12px #00ffff;
+    transform: scale(1.05);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #666;
+    grid-column: 1 / -1;
+}
+
+.empty-state h3 {
+    font-family: 'Orbitron', monospace;
+    color: #00ffff;
+    margin-bottom: 1rem;
+}
+
+.empty-state p {
+    color: #b3b3b3;
+}
+
+.empty-state a {
+    color: #00ffff;
+    text-decoration: none;
+}
+
+.empty-state a:hover {
+    text-decoration: underline;
+}
+
+.error-state {
+    text-align: center;
+    padding: 2rem;
+    color: #ff4757;
+    grid-column: 1 / -1;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background: rgba(30, 30, 40, 0.95);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    border-radius: 25px;
+    padding: 2.5rem;
+    max-width: 800px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(15px);
+}
+
+.modal-content h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    color: #00ffff;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.explorations-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+
+.survival-score-modal {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #00ffff;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.score-excellent {
+    color: #2ed573;
+}
+
+.score-good {
+    color: #1e90ff;
+}
+
+.score-fair {
+    color: #ffa502;
+}
+
+.score-poor {
+    color: #ff4757;
+}
+
+.exploration-item p {
+    color: #b3b3b3;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.exploration-item small {
+    color: #666;
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+}
+
+.close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2rem;
+    color: #00ffff;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.close:hover {
+    background: rgba(0, 255, 255, 0.2);
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+}
+            
+            .aliens-grid, .explorations-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .environments-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+            
+            .alien-actions {
+                flex-direction: column;
+            }
+            
+            .alien-card {
+                padding: 1.5rem;
+            }
+            
+            .alien-image {
+                height: 180px;
+            }
+            
+            .btn-explore, .btn-view {
+                padding: 0.7rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .explorer-content {
+                padding: 0 1rem;
+            }
+            
+            .modal-content {
+                padding: 1.5rem 1rem;
+                width: 95%;
+            }
+            
+            .exploration-item {
+                padding: 1rem;
+            }
+        }
+
+        /* Enhanced Environment Explorer Styling */
+        .modal-content {
+            background: linear-gradient(135deg, rgba(20, 20, 30, 0.98), rgba(40, 40, 60, 0.95));
+            border: 2px solid rgba(0, 255, 255, 0.4);
+            border-radius: 25px;
+            padding: 3rem;
+            max-width: 900px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-content h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.2rem;
+            color: #00ffff;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+            background: linear-gradient(135deg, #00ffff, #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .environment-selector h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.6rem;
+            color: #ff00ff;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+
+        .environments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2.5rem 0;
+        }
+
+        .environment-card {
+            background: linear-gradient(145deg, rgba(30, 30, 40, 0.8), rgba(50, 50, 70, 0.6));
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .environment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff);
+            opacity: 0.8;
+        }
+
+        .environment-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 255, 255, 0.3);
+            border-color: rgba(0, 255, 255, 0.5);
+            background: linear-gradient(145deg, rgba(40, 40, 60, 0.9), rgba(60, 60, 80, 0.7));
+        }
+
+        .environment-card h4 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            color: #00ffff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+        }
+
+        .env-type {
+            color: #ff00ff;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .env-description {
+            color: #b3b3b3;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .env-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #888;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.75rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-explore-env {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #00ffff, #0080ff);
+            color: #000;
+            border: none;
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .btn-explore-env::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-explore-env:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.5);
+            background: linear-gradient(135deg, #00ffff, #00aaff);
+        }
+
+        .btn-explore-env:hover::before {
+            left: 100%;
+        }
+
+        .btn-explore-env:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* Enhanced Button Styling */
+        .btn-explore, .btn-view {
+            flex: 1;
+            min-width: 140px;
+            padding: 1rem 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-explore {
+            background: linear-gradient(135deg, #00ffff, #0080ff);
+            color: #000;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .btn-view {
+            background: transparent;
+            color: #ff00ff;
+            border: 2px solid #ff00ff;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+        }
+
+        .btn-explore::before, .btn-view::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-explore:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.5);
+            background: linear-gradient(135deg, #00ffff, #00aaff);
+        }
+
+        .btn-view:hover {
+            background: #ff00ff;
+            color: #000;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 0, 255, 0.5);
+        }
+
+        .btn-explore:hover::before, .btn-view:hover::before {
+            left: 100%;
+        }
+
+        .btn-explore:active, .btn-view:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* Enhanced Exploration Results */
+        .exploration-results {
+            background: linear-gradient(145deg, rgba(20, 20, 30, 0.9), rgba(40, 40, 60, 0.8));
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-top: 3rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .survival-score {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .score-label {
+            font-size: 1.3rem;
+            color: #b3b3b3;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-left: 0;
+            text-shadow: 0 0 20px currentColor;
+        }
+
+        .analysis-section, .narrative-section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid #00ffff;
+        }
+
+        .analysis-section h4, .narrative-section h4 {
+            font-family: 'Orbitron', monospace;
+            color: #00ffff;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .analysis-section p, .narrative-section p {
+            color: #b3b3b3;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* Enhanced Close Button */
+        .close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: #00ffff;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .close:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+        }
+
+        /* Enhanced Alien Cards */
+        .alien-card {
+            background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(42, 42, 42, 0.8));
+            border: 3px solid transparent;
+            border-radius: 30px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 1;
+            transform: translateY(0);
+            backdrop-filter: blur(15px);
+            margin-bottom: 2rem;
+        }
+
+        .alien-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff);
+            opacity: 0.9;
+            z-index: 1;
+        }
+
+        .alien-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 30px;
+            border: 3px solid transparent;
+            background: linear-gradient(45deg, #00ffff, #ff00ff) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            z-index: -1;
+            transition: all 0.15s ease;
+        }
+
+        .alien-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 255, 255, 0.4);
+            background: linear-gradient(145deg, rgba(40, 40, 60, 0.9), rgba(42, 42, 42, 0.8));
+        }
+
+        .alien-card:hover::after {
+            background: linear-gradient(45deg, #00ff88, #00ffff, #ff00ff) border-box;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .alien-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .alien-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .alien-card:hover .alien-image {
+            transform: scale(1.05);
+            border-color: rgba(0, 255, 255, 0.4);
+            box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3);
+        }
+    </style>
+    
+    <script>
+        let currentAlienId = null;
+        let environments = [];
+
+        // Load saved aliens
+        async function loadSavedAliens() {
+            try {
+                const response = await fetch('/api/saved-aliens');
+                const aliens = await response.json();
+                
+                const grid = document.getElementById('aliensGrid');
+                
+                if (aliens.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">🪐</div>
+                            <h3>No aliens saved yet</h3>
+                            <p>Create your first alien on the <a href="/dashboard">dashboard</a>!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                grid.innerHTML = '';
+                aliens.forEach(alien => {
+                    const alienCard = createAlienCard(alien);
+                    grid.appendChild(alienCard);
+                });
+                
+            } catch (error) {
+                console.error('Error loading aliens:', error);
+                document.getElementById('aliensGrid').innerHTML = `
+                    <div class="error-state">
+                        <p>Error loading aliens. Please try again.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Create alien card
+        function createAlienCard(alien) {
+            const card = document.createElement('div');
+            card.className = 'alien-card';
+            card.innerHTML = `
+                <div class="alien-info">
+                    <h3>${alien.planet_name}</h3>
+                    <img src="${alien.image_url}" alt="${alien.alien_data.name}" loading="lazy" class="alien-image">
+                    <h4>${alien.alien_data.name}</h4>
+                    <p class="alien-description">${alien.alien_data.description}</p>
+                    <div class="alien-traits">
+                        <strong>Traits:</strong> ${alien.alien_data.physicalTraits.slice(0, 3).join(', ')}...
+                    </div>
+                    <div class="alien-actions">
+                        <button class="btn-explore" onclick="exploreEnvironments(${alien.id})">
+                            Explore Environments
+                        </button>
+                        <button class="btn-view" onclick="viewExplorations(${alien.id})">
+                            View Explorations
+                        </button>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        // Load environments
+        async function loadEnvironments() {
+            try {
+                const response = await fetch('/api/environments');
+                environments = await response.json();
+            } catch (error) {
+                console.error('Error loading environments:', error);
+            }
+        }
+
+        // Explore environments
+        function exploreEnvironments(alienId) {
+            currentAlienId = alienId;
+            const explorer = document.getElementById('environmentModal');
+            const grid = document.getElementById('environmentsGrid');
+            
+            explorer.style.display = 'flex';
+            grid.innerHTML = '';
+            
+            environments.forEach(env => {
+                const envCard = document.createElement('div');
+                envCard.className = 'environment-card';
+                envCard.innerHTML = `
+                    <h4>${env.name}</h4>
+                    <p class="env-type">${env.type}</p>
+                    <p class="env-description">${env.description}</p>
+                    <div class="env-stats">
+                        <span>Temp: ${env.temperature}</span>
+                        <span>Gravity: ${env.gravity}g</span>
+                    </div>
+                    <button class="btn-explore-env" onclick="exploreEnvironment(${env.id})">
+                        Explore
+                    </button>
+                `;
+                grid.appendChild(envCard);
+            });
+            
+            // Scroll to top of page to show modal
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Explore specific environment
+        async function exploreEnvironment(environmentId) {
+            try {
+                const response = await fetch('/api/explore-environment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        alien_id: currentAlienId,
+                        environment_id: environmentId
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayExplorationResults(result.exploration);
+                }
+            } catch (error) {
+                console.error('Error exploring environment:', error);
+                alert('Error exploring environment. Please try again.');
+            }
+        }
+
+        // Display exploration results with enhanced animations
+        function displayExplorationResults(exploration) {
+            const results = document.getElementById('explorationResults');
+            const score = document.getElementById('survivalScore');
+            const analysis = document.getElementById('survivalAnalysis');
+            const narrative = document.getElementById('survivalNarrative');
+            
+            // Animate score with counter effect
+            let currentScore = 0;
+            const targetScore = exploration.survival_score;
+            const increment = targetScore / 30;
+            
+            const counter = setInterval(() => {
+                currentScore += increment;
+                if (currentScore >= targetScore) {
+                    currentScore = targetScore;
+                    clearInterval(counter);
+                }
+                score.textContent = Math.round(currentScore) + '%';
+            }, 50);
+            
+            score.className = 'score-value score-' + getScoreClass(exploration.survival_score);
+            analysis.textContent = exploration.survival_analysis;
+            narrative.textContent = exploration.narrative_outcome;
+            
+            results.style.display = 'block';
+            
+            // Add staggered animation to sections
+            const sections = results.querySelectorAll('.analysis-section, .narrative-section');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    section.style.transition = 'all 0.6s ease';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, 200 + (index * 150));
+            });
+            
+            // Scroll to results with smooth animation
+            setTimeout(() => {
+                results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 300);
+        }
+
+        // Get score class for styling
+        function getScoreClass(score) {
+            if (score >= 80) return 'excellent';
+            if (score >= 60) return 'good';
+            if (score >= 40) return 'fair';
+            return 'poor';
+        }
+
+        // View explorations
+        async function viewExplorations(alienId) {
+            try {
+                const response = await fetch(`/api/alien-explorations/${alienId}`);
+                const explorations = await response.json();
+                
+                if (explorations.length === 0) {
+                    alert('No explorations yet for this alien. Try exploring some environments!');
+                    return;
+                }
+                
+                // Use existing explorations modal
+                displayExplorationsInModal(explorations);
+            } catch (error) {
+                console.error('Error loading explorations:', error);
+                alert('Error loading explorations. Please try again.');
+            }
+        }
+
+        // Display explorations in the existing modal
+        function displayExplorationsInModal(explorations) {
+            const modal = document.getElementById('explorationsModal');
+            const list = document.getElementById('explorationsList');
+            
+            list.innerHTML = '';
+            explorations.forEach(exp => {
+                const item = document.createElement('div');
+                item.className = 'exploration-item';
+                item.innerHTML = `
+                    <h4>${exp.environment.name}</h4>
+                    <div class="survival-score-modal score-${getScoreClass(exp.survival_score)}">
+                        Survival: ${exp.survival_score}%
+                    </div>
+                    <p><strong>Analysis:</strong> ${exp.survival_analysis}</p>
+                    <p><strong>Story:</strong> ${exp.narrative_outcome}</p>
+                    <small>Explored: ${new Date(exp.explored_at).toLocaleDateString()}</small>
+                `;
+                list.appendChild(item);
+            });
+            
+            modal.style.display = 'flex';
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const envModal = document.getElementById('environmentModal');
+            const expModal = document.getElementById('explorationsModal');
+            
+            if (event.target === envModal) {
+                closeEnvironmentModal();
+            }
+            if (event.target === expModal) {
+                closeExplorationsModal();
+            }
+        }
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeEnvironmentModal();
+                closeExplorationsModal();
+            }
+        });
+
+        // Close modal functions
+        function closeEnvironmentModal() {
+            document.getElementById('environmentModal').style.display = 'none';
+            document.getElementById('explorationResults').style.display = 'none';
+        }
+
+        function closeExplorationsModal() {
+            document.getElementById('explorationsModal').style.display = 'none';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSavedAliens();
+            loadEnvironments();
+        });
+    </script>
+</body>
+</html>

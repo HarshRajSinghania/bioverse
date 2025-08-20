@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioVerse - Discover Alien Worlds</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="cosmic-background">
+        <div class="stars"></div>
+        <div class="nebula"></div>
+        <div class="floating-particles"></div>
+    </div>
+    
+    {% include 'header.html' %}
+    
+    <main class="container">
+        <section class="hero-section enhanced">
+            <div class="hero-content">
+                <h1 class="brand-title">BioVERSE</h1>
+                <h2>Welcome to the Future of Astrobiology</h2>
+                <p class="hero-description">Using advanced AI, we generate scientifically accurate alien creatures adapted to specific planetary conditions. No humanoid creatures - only truly alien lifeforms.</p>
+                
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <div class="feature-icon animated">🪐</div>
+                        <h3>Planetary Analysis</h3>
+                        <p>Advanced analysis of planetary conditions</p>
+                    </div>
+                    <div class="hero-feature">
+                        <div class="feature-icon animated">👽</div>
+                        <h3>Non-Humanoid Aliens</h3>
+                        <p>Truly extraterrestrial lifeforms</p>
+                    </div>
+                    <div class="hero-feature">
+                        <div class="feature-icon animated">🔬</div>
+                        <h3>Scientific Accuracy</h3>
+                        <p>Biologically plausible adaptations</p>
+                    </div>
+                </div>
+                
+                <div class="hero-cta">
+                    <a href="{{ url_for('register') }}" class="cta-button primary enhanced">
+                        <span>🚀 Get Started</span>
+                    </a>
+                    <a href="{{ url_for('login') }}" class="cta-button secondary enhanced">
+                        <span>🔐 Sign In</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <section class="features-showcase">
+            <h2>Explore the Cosmos</h2>
+            <div class="features-grid">
+                <div class="feature-card animated">
+                    <div class="feature-icon large">🪐</div>
+                    <h3>Planetary Analysis</h3>
+                    <p>Advanced analysis of planetary conditions</p>
+                </div>
+                <div class="feature-card animated">
+                    <div class="feature-icon large">👽</div>
+                    <h3>Non-Humanoid Aliens</h3>
+                    <p>Truly extraterrestrial lifeforms</p>
+                </div>
+                <div class="feature-card animated">
+                    <div class="feature-icon large">🔬</div>
+                    <h3>Scientific Accuracy</h3>
+                    <p>Biologically plausible adaptations</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="stats-showcase">
+            <h2>Our Cosmic Achievements</h2>
+            <div class="stats-grid enhanced">
+                <div class="stat-card animated">
+                    <div class="stat-number cosmic">∞</div>
+                    <h3>Possible Worlds</h3>
+                    <p>Every planet tells a unique story</p>
+                </div>
+                <div class="stat-card animated">
+                    <div class="stat-number cosmic">100%</div>
+                    <h3>Scientific Accuracy</h3>
+                    <p>Based on real planetary data</p>
+                </div>
+                <div class="stat-card animated">
+                    <div class="stat-number cosmic">0</div>
+                    <h3>Humanoid Aliens</h3>
+                    <p>Only truly extraterrestrial lifeforms</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="contact-section enhanced">
+            <div class="contact-container">
+                <h2>Get in Touch</h2>
+                <p>Have questions about alien creation or want to collaborate? We'd love to hear from you!</p>
+                
+                <form class="contact-form" id="contactForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required placeholder="Your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required placeholder="your@email.com">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required placeholder="What's this about?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="Tell us more..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn enhanced">
+                        <span class="btn-text">Send Message</span>
+                        <span class="btn-loading" style="display: none;">Sending...</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+    
+    {% include 'footer.html' %}
+    
+    <style>
+        .cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            z-index: -3;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(0,255,255,0.5), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,0,255,0.5), transparent),
+                radial-gradient(2px 2px at 160px 30px, #ddd, transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: twinkle 4s linear infinite;
+            z-index: -2;
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .floating-particles::before,
+        .floating-particles::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(0, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-particles::before {
+            top: 20%;
+            left: 10%;
+            animation-delay: -2s;
+        }
+
+        .floating-particles::after {
+            top: 60%;
+            right: 15%;
+            animation-delay: -4s;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        .hero-section.enhanced {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 30px;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section.enhanced::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+        }
+
+        .brand-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-section.enhanced h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            color: #ff00ff;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: #b3b3b3;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .hero-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .hero-feature {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .hero-feature:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+            border-color: rgba(0, 255, 255, 0.4);
+        }
+
+        .feature-icon.animated {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .hero-feature h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            color: #00ffff;
+            margin-bottom: 1rem;
+        }
+
+        .hero-feature p {
+            color: #b3b3b3;
+            line-height: 1.6;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .cta-button.primary.enhanced {
+            background: linear-gradient(135deg, #00ffff, #0080ff);
+            color: #000;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .cta-button.primary.enhanced:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.5);
+        }
+
+        .cta-button.secondary.enhanced {
+            background: transparent;
+            color: #00ffff;
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+
+        .cta-button.secondary.enhanced:hover {
+            background: #00ffff;
+            color: #000;
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.8);
+        }
+
+        .features-showcase {
+            margin: 4rem 0;
+        }
+
+        .features-showcase h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            color: #00ffff;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+            border-color: rgba(0, 255, 255, 0.4);
+        }
+
+        .feature-icon.large {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            color: #00ffff;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: #b3b3b3;
+            line-height: 1.6;
+        }
+
+        .stats-showcase {
+            margin: 4rem 0;
+        }
+
+        .stats-showcase h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            color: #00ffff;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .stats-grid.enhanced {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+            border-color: rgba(0, 255, 255, 0.4);
+        }
+
+        .stat-number.cosmic {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            color: #ff00ff;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card p {
+            color: #b3b3b3;
+            line-height: 1.6;
+        }
+
+        .contact-section.enhanced {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 3rem;
+            margin: 4rem 0;
+        }
+
+        .contact-section.enhanced h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            color: #00ffff;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .contact-section.enhanced p {
+            color: #b3b3b3;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .contact-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #00ffff;
+            font-weight: 600;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .submit-btn.enhanced {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00ffff, #0080ff);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn.enhanced:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .brand-title {
+                font-size: 3rem;
+            }
+            
+            .hero-section.enhanced {
+                padding: 4rem 1rem;
+            }
+            
+            .hero-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .features-grid,
+            .stats-grid.enhanced {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-section.enhanced {
+                padding: 2rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brand-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-section.enhanced h2 {
+                font-size: 1.5rem;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</body>
+</html>

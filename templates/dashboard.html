@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioVerse - AI Alien Creator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="cosmic-background">
+        <div class="stars"></div>
+        <div class="nebula"></div>
+        <div class="floating-particles"></div>
+    </div>
+    
+    {% include 'header.html' %}
+    
+    <main class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Alien Creation Portal</h1>
+            <p class="dashboard-subtitle">Transform planetary data into living alien species using advanced AI</p>
+        </div>
+        
+        <section class="creation-panel">
+            <div class="panel-header">
+                <h2>🪐 Create Your Alien</h2>
+                <p>Enter any planet name - real or fictional - and watch AI bring it to life</p>
+            </div>
+            
+            <div class="input-section enhanced">
+                <div class="input-group">
+                    <label for="planetInput" class="input-label">Planet Name</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="planetInput" 
+                               placeholder="e.g., Kepler-452b, Proxima Centauri b, Gliese-581g..." 
+                               maxlength="50" class="planet-input">
+                        <button id="generateBtn" class="generate-btn enhanced">
+                            <span class="btn-text">Create Alien Species</span>
+                            <span class="btn-loading" style="display: none;">Creating...</span>
+                        </button>
+                    </div>
+                    <p class="input-hint">💡 Pro tip: Try both real exoplanets and fictional worlds!</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="loading-section" id="loading" style="display: none;">
+            <div class="cosmic-loader">
+                <div class="planet-orbit">
+                    <div class="planet"></div>
+                    <div class="orbit-ring"></div>
+                    <div class="satellite"></div>
+                </div>
+                <div class="loading-content">
+                    <h3>Analyzing Planetary Data...</h3>
+                    <p class="loading-text">Scanning atmospheric composition</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p class="loading-subtext">This may take 10-30 seconds as we analyze the cosmos</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="results-section" id="results" style="display: none;">
+            <div class="results-header">
+                <h2>🧬 Planetary Analysis Complete</h2>
+                <p>Discover the alien life that evolved on this world</p>
+            </div>
+            
+            <div class="results-grid">
+                <div class="planet-card enhanced-card">
+                    <div class="card-header">
+                        <h3 id="planetName">Planet Name</h3>
+                        <span class="badge planet-badge">🪐 Planet Analysis</span>
+                    </div>
+                    <div class="planet-content">
+                        <div class="image-container">
+                            <img id="planetImage" alt="Generated Planet" class="planet-image">
+                            <div class="image-glow"></div>
+                        </div>
+                        <div class="planet-description" id="planetDescription"></div>
+                        <div class="planet-traits" id="planetTraits"></div>
+                    </div>
+                </div>
+                
+                <div class="alien-card">
+                    <div class="card-header">
+                        <h3 id="alienName">Alien Species</h3>
+                        <span class="badge alien-badge">👽 Alien Lifeform</span>
+                    </div>
+                    <div class="alien-content">
+                        <div class="image-container">
+                            <img id="alienImage" alt="Generated Alien" class="alien-image">
+                            <div class="image-glow"></div>
+                        </div>
+                        <div class="alien-description" id="alienDescription"></div>
+                        <div class="alien-traits" id="alienTraits"></div>
+                        <div class="alien-stats" id="alienStats"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-panel">
+                <button id="saveBtn" class="action-btn save-btn" style="display: none;">
+                    <span>💾 Save to Collection</span>
+                </button>
+                <button id="resetBtn" class="action-btn reset-btn">
+                    <span>🔄 Create Another</span>
+                </button>
+                <button id="shareBtn" class="action-btn share-btn" style="display: none;">
+                    <span>🔗 Share Creation</span>
+                </button>
+            </div>
+        </section>
+        
+        <section class="recent-creations">
+            <h2>🌟 Recent Creations</h2>
+            <div class="creations-grid" id="recentCreations">
+                <div class="empty-state">
+                    <div class="empty-icon">🪐</div>
+                    <h3>No recent creations</h3>
+                    <p>Start by creating your first alien species above!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    {% include 'footer.html' %}
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    
+    <style>
+        .cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            z-index: -3;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(0,255,255,0.5), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,0,255,0.5), transparent),
+                radial-gradient(2px 2px at 160px 30px, #ddd, transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: twinkle 4s linear infinite;
+            z-index: -2;
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .floating-particles::before,
+        .floating-particles::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(0, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-particles::before {
+            top: 20%;
+            left: 10%;
+            animation-delay: -2s;
+        }
+
+        .floating-particles::after {
+            top: 60%;
+            right: 15%;
+            animation-delay: -4s;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin: 2rem 0 3rem;
+        }
+
+        .dashboard-header h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-subtitle {
+            font-size: 1.2rem;
+            color: #b3b3b3;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .creation-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .panel-header h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            color: #00ffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .panel-header p {
+            color: #b3b3b3;
+            font-size: 1.1rem;
+        }
+
+        .input-section {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #00ffff;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .planet-input {
+            flex: 1;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .planet-input:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .planet-input::placeholder {
+            color: #666;
+        }
+
+        .generate-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #00ffff, #0080ff);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.4);
+        }
+
+        .input-hint {
+            color: #666;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .loading-section {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .cosmic-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .planet-orbit {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .planet {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00ffff, #0080ff);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .orbit-ring {
+            width: 80px;
+            height: 80px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotate 10s linear infinite;
+        }
+
+        .satellite {
+            width: 8px;
+            height: 8px;
+            background: #ff00ff;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: orbit 3s linear infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes orbit {
+            from { transform: translate(-50%, -50%) rotate(0deg) translateX(40px) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg) translateX(40px) rotate(-360deg); }
+        }
+
+        .loading-content h3 {
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+            margin-bottom: 1rem;
+        }
+
+        .loading-text {
+            color: #b3b3b3;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 1rem auto;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            animation: progress 3s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        .results-section {
+            margin-top: 3rem;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-header h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            color: #00ffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-header p {
+            color: #b3b3b3;
+            font-size: 1.1rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+
+        .action-panel {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .recent-creations {
+            margin-top: 4rem;
+        }
+
+        .recent-creations h2 {
+.enhanced-card {
+    background: rgba(30, 30, 40, 0.6);
+    border: 1px solid rgba(0, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.enhanced-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00ffff, #ff00ff);
+    opacity: 0.8;
+}
+
+.enhanced-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 255, 0.4);
+    border-color: rgba(0, 255, 255, 0.4);
+    background: rgba(40, 40, 60, 0.8);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.card-header h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.6rem;
+    color: #00ffff;
+    margin: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.enhanced-card:hover .card-header h3 {
+    text-shadow: 0 0 10px #00ffff;
+}
+
+.badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.planet-badge {
+    background: rgba(0, 255, 255, 0.1);
+    color: #00ffff;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.alien-badge {
+    background: rgba(255, 0, 255, 0.1);
+    color: #ff00ff;
+    border: 1px solid rgba(255, 0, 255, 0.3);
+}
+
+.image-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.planet-image, .alien-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.enhanced-card:hover .planet-image,
+.enhanced-card:hover .alien-image {
+    transform: scale(1.02);
+    border-color: rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+.planet-content, .alien-content {
+    margin-bottom: 1rem;
+}
+
+.planet-description, .alien-description {
+    color: #b3b3b3;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+}
+
+.planet-traits, .alien-traits {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.alien-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1rem;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.75rem;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid rgba(0, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.stat-value {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #00ffff;
+}
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            color: #00ffff;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .creations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .alien-card {
+            background: linear-gradient(145deg, rgba(26, 26, 26, 0.8), rgba(42, 42, 42, 0.8));
+            border: 3px solid transparent;
+            border-radius: 30px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 1;
+            transform: translateY(0);
+            backdrop-filter: blur(15px);
+            margin-bottom: 1.5rem;
+        }
+        
+        .alien-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            opacity: 0.9;
+            z-index: 1;
+        }
+        
+        .alien-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 30px;
+            border: 3px solid transparent;
+            background: linear-gradient(45deg, #00ffff, #ff00ff) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            z-index: -1;
+            transition: all 0.15s ease;
+        }
+        
+        .alien-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 255, 255, 0.4);
+            background: linear-gradient(145deg, rgba(40, 40, 60, 0.8), rgba(42, 42, 42, 0.8));
+        }
+        
+        .alien-card:hover::after {
+            background: linear-gradient(45deg, #00ff88, #00ffff, #ff00ff) border-box;
+            animation: rotate 2s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .btn-explore, .btn-view {
+            flex: 1;
+            min-width: 120px;
+            padding: 0.85rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: #00ffff;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .btn-explore::before, .btn-view::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-explore:hover, .btn-view:hover {
+            background: linear-gradient(135deg, #00ffff, #0080ff);
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+            border-color: rgba(0, 255, 255, 0.6);
+        }
+        
+        .btn-explore:hover::before, .btn-view:hover::before {
+            left: 100%;
+        }
+        
+        .alien-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+        
+        .alien-traits {
+            background: rgba(0, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+            
+            .dashboard-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .creation-panel {
+                padding: 1.5rem;
+            }
+            
+            .input-wrapper {
+                flex-direction: column;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .enhanced-card {
+                padding: 1.5rem;
+            }
+            
+            .planet-image, .alien-image {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
+            
+            .creation-panel {
+                padding: 1rem;
+            }
+            
+            .card-header h3 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</body>
+</html>
